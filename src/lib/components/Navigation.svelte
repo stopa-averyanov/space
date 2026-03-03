@@ -41,6 +41,8 @@ const elements = [
     align-items: end;
 
     z-index: 2;
+
+    text-align: right;
 }
 .burger-menu-icon {
 
@@ -87,10 +89,6 @@ const elements = [
 .burger-menu-icon:hover {
 
     transform: scale(1.1, 1.1);
-}
-.navigation-container {
-
-    text-align: right;
 }
 a {
     margin: 0.5em 0;
