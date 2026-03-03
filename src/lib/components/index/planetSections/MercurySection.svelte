@@ -1,5 +1,5 @@
 <script>
-import TextSection from "./TextSection.svelte";
+import TextSection from "../TextSection.svelte";
 </script>
 
 {#snippet header()}

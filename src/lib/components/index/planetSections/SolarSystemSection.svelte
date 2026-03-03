@@ -1,10 +1,10 @@
 <script>
-import TextSection from "./TextSection.svelte";
+import TextSection from "../TextSection.svelte";
 </script>
 
 {#snippet header()}
 <p>Всего лишь пылинка во млечном пути</p>
-<h1>Солнечная система</h1>
+<h1>Солнечная<br>система</h1>
 {/snippet}
 
 {#snippet body()}

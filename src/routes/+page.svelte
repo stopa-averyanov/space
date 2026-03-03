@@ -1,29 +1,48 @@
 <script lang='ts'>
 
-import ScrollFunctionSection from './ScrollFunctionSection.svelte';
-import Navigation from '$lib/components/Navigation.svelte';
 import SolarSystem3DBackground from '$lib/components/SolarSystem3DBackground.svelte';
-import SolarSystemSection from './SolarSystemSection.svelte';
-import SunSection from './SunSection.svelte';
 import { onMount } from 'svelte';
-import MercurySection from './MercurySection.svelte';
-import VenusSection from './VenusSection.svelte';
-import EarthSection from './EarthSection.svelte';
-import MarsSection from './MarsSection.svelte';
-import JupiterSection from './JupiterSection.svelte';
-import SaturnSection from './SaturnSection.svelte';
-import UranusSection from './UranusSection.svelte';
-import NeptuneSection from './NeptuneSection.svelte';
-    import MoonSection from './MoonSection.svelte';
-
-
-let container : HTMLDivElement;
+import PagedSections from '$lib/components/index/PagedSections.svelte';
+    import LeftRightButton from '$lib/components/index/LeftRightButton.svelte';
 
 let background : SolarSystem3DBackground;
 
+let content : PagedSections;
+let page = 0;
+
+let focusFunctions : (() => void)[];
+
 onMount(() => {
     background.wideShot();
+
+    focusFunctions = [
+
+        background.wideShot,
+        background.focusOnSun,
+        background.focusOnMercury,
+        background.focusOnVenus,
+        background.focusOnEarth,
+        background.focusOnMoon,
+        background.focusOnMars,
+        background.focusOnJupiter,
+        background.focusOnSaturn,
+        background.focusOnUranus,
+        background.focusOnNeptune,
+    ]
 });
+
+function pageNext() {
+    if (page == 10) return;
+    page ++;
+    focusFunctions[page]();
+    content.setPage(page);
+}
+function pagePrevious() {
+    if (page == 0) return;
+    page --;
+    focusFunctions[page]();
+    content.setPage(page);
+}
 </script>
 
 <style>
@@ -38,7 +57,20 @@ div :global(canvas) {
     left: 0;
     z-index: -1;
 }
-
+.page-container {
+    
+    min-width: 100vw;
+    min-height: 100vh;
+    position: relative;
+}
+.planets-navigation {
+    position: absolute;
+    bottom: 5vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
 </style>
 
 <svelte:head>
@@ -47,17 +79,10 @@ div :global(canvas) {
 
 <SolarSystem3DBackground bind:this={background}></SolarSystem3DBackground>
 
-<div class='page-container' bind:this={container} style="display: contents;">
+<div class='page-container' style="display: contents;">
 
-    <ScrollFunctionSection content={SolarSystemSection} scrollFunction={background.wideShot}></ScrollFunctionSection>
-    <ScrollFunctionSection content={SunSection} scrollFunction={background.focusOnSun}></ScrollFunctionSection>
-    <ScrollFunctionSection content={MercurySection} scrollFunction={background.focusOnMercury}></ScrollFunctionSection>
-    <ScrollFunctionSection content={VenusSection} scrollFunction={background.focusOnVenus}></ScrollFunctionSection>
-    <ScrollFunctionSection content={EarthSection} scrollFunction={background.focusOnEarth}></ScrollFunctionSection>
-    <ScrollFunctionSection content={MoonSection} scrollFunction={background.focusOnMoon}></ScrollFunctionSection>
-    <ScrollFunctionSection content={MarsSection} scrollFunction={background.focusOnMars}></ScrollFunctionSection>
-    <ScrollFunctionSection content={JupiterSection} scrollFunction={background.focusOnJupiter}></ScrollFunctionSection>
-    <ScrollFunctionSection content={SaturnSection} scrollFunction={background.focusOnSaturn}></ScrollFunctionSection>
-    <ScrollFunctionSection content={UranusSection} scrollFunction={background.focusOnUranus}></ScrollFunctionSection>
-    <ScrollFunctionSection content={NeptuneSection} scrollFunction={background.focusOnNeptune}></ScrollFunctionSection>
+    <PagedSections bind:this={content}></PagedSections>
+    <div class='planets-navigation'>
+        <LeftRightButton clickLeft={pagePrevious} clickRight={pageNext}></LeftRightButton>
+    </div>
 </div>
