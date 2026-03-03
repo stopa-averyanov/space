@@ -86,8 +86,8 @@ function animate() {
 }
 function resize() {
 
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
+    const w = canvas.clientWidth * devicePixelRatio;
+    const h = canvas.clientHeight * devicePixelRatio;
 
     cameraman.resize(w, h);
     renderer.setSize( w, h, false );
